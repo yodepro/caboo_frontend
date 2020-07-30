@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { withNaming } from "@bem-react/classname";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,12 +8,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, Button } from "antd";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { getInfo } from "../../redux/temp";
 import "./Header.less";
 
 const cn = withNaming({ n: "", e: "__", m: "_", v: "_" });
 const b = cn("site-header");
 
-export class Header extends React.Component {
+class Header extends React.Component {
+  componentDidMount() {
+    const { getInfo } = this.props;
+
+    getInfo();
+  }
+
   render() {
     return (
       <header className={b()}>
@@ -21,7 +29,7 @@ export class Header extends React.Component {
             icon={faMapMarkerAlt}
             size="lg"
             className={b("map-icon")}
-          />{" "}
+          />
           <span className={b("city-name")}>Йошкар-Ола</span>
         </div>
         <div className={b("user-wrapper")}>
@@ -40,3 +48,17 @@ export class Header extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getInfo: () => dispatch(getInfo()),
+  };
+}
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(Header);
+
+export { connectedComponent as Header };
